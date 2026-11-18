@@ -1,0 +1,33 @@
+
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonarcloud:
+    name: Analisis SonarCloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Analizar codigo con SonarCloud
+        uses: SonarSource/sonarqube-scan-action@v8.5.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.organization=andrealozanotoledo
+            -Dsonar.projectKey=andrealozanotoledo_CityDrive-SonarCloud
+            -Dsonar.sources=mostrar_referencia.py,referencia_reserva.py,src/citydrive/reservas/cancelacion.py,src/models/reserva_activa.py,src/services/listado_reservas_service.py,src/views/consulta_referencia.py,src/views/consulta_reservas_activas_admin.py,src/views/presentacion_reservas_activas.py
+            -Dsonar.sourceEncoding=UTF-8
